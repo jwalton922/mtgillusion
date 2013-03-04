@@ -4,7 +4,6 @@ function DeckBuilder($scope, $http, $log) {
     $scope.searchText = "";
     $scope.searchResults = [];
     $scope.deck = [];
-    $scope.cardToView = "";
     
     $scope.searchByName = function() {
 

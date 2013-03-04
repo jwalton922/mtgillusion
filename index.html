@@ -19,7 +19,7 @@
                 <button data-ng-click="viewCard(result)">View</button>{
                 {result.name}}</li>
         </ul>
-        <div id="cardDisplay">
+        <div ng-show="cardToView" id="cardDisplay">
             <img src="{{cardToView}}" alt="Hit View to see a card"/>
         </div>
         <div>
