@@ -7,7 +7,7 @@ function DeckBuilder($scope, $http, $log) {
         var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
         var params = {};
         params.nameFragment = $scope.searchText;
-        params["JSON_CALLBACK"] = "$scope.processSearchResults";
+        params.callback = "$scope.processSearchResults";
         params.dataType = "jsonp";
 
         $http.jsonp(url, {params: params}).success(function(xhr) {
