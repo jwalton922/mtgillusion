@@ -109,6 +109,15 @@ var SampleApp = function() {
     };
 
 
+    self.createPostRoutes = function(){
+        self.postRoutes = {};
+        
+        self.postRoutes['/deck/create'] = function(req, res) {
+            console.log("saving deck: "+JSON.stringify(req.body));
+            
+        };
+    }
+
     /*  ================================================================  */
     /*  App server functions (main app logic here).                       */
     /*  ================================================================  */
@@ -128,6 +137,15 @@ var SampleApp = function() {
             var link = "http://i.imgur.com/kmbjB.png";
             res.send("<html><body><img src='" + link + "'></body></html>");
         };
+        
+        
+        self.routes['/deck'] = function(req, res){
+            console.log("/deck called");
+        }
+        
+        self.routes["/deck/create"] = function(req,res){
+            console.log("get /deck/create called");
+        }
 
         self.routes["/search"] = function(req, res) {
             var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
@@ -179,14 +197,22 @@ var SampleApp = function() {
      */
     self.initializeServer = function() {
         self.createRoutes();
+        self.createPostRoutes();
         self.app = express.createServer();
         self.app.use("/lib", express.static(__dirname + '/lib'));
         self.app.use("/js", express.static(__dirname + '/js'));
         self.app.use("/mtgImages", express.static(__dirname + '/mtgImages'));
+        self.app.use(express.bodyParser());
+        //self.app.use(self.app.router);
         //  Add handlers for the app (from the routes).
+        for(var p in self.postRoutes){
+            console.log("creating post route: "+p);
+            self.app.post(p, self.postRoutes[p]);
+        }
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
+        
     };
 
 

@@ -3,7 +3,21 @@
 function DeckBuilder($scope, $http, $log) {
     $scope.searchText = "";
     $scope.searchResults = [];
-    $scope.deck = [];
+    $scope.deck = {};
+    $scope.deck.cards = [];
+    
+    $scope.removeFromDeck = function(card){
+        var indexToRemove = -1;
+        for(var i = 0; i < $scope.deck.length; i++){
+            if(card.name === $scope.deck[i].name){
+                indexToRemove = i;
+            }
+        }
+        
+        if(indexToRemove >= 0){
+            $scope.deck.cards.splice(indexToRemove, 1);
+        }
+    }
     
     $scope.searchByName = function() {
 
@@ -31,7 +45,7 @@ function DeckBuilder($scope, $http, $log) {
         var deckObj = {};
         deckObj.name = result.name;
         deckObj.quantity = result.quantity;
-        $scope.deck.push(deckObj);
+        $scope.deck.cards.push(deckObj);
     }
     
     $scope.viewCard = function(searchResult){
@@ -43,6 +57,14 @@ function DeckBuilder($scope, $http, $log) {
         cardName+=".jpg";
         $log.log("viewing card: "+cardName);
         $scope.cardToView = "/mtgImages/"+cardName;
+    }
+    
+    $scope.saveDeck = function(){
+        $http.post("/deck/create", {data: $scope.deck}).success(function(xhr){
+            $log.log("success creating deck: "+angular.toJson(xhr));
+        }).error(function(xhr){
+           $log.log("error creating deck: "+angular.toJson(xhr)); 
+        });
     }
 
 }
