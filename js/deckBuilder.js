@@ -37,6 +37,15 @@ function DeckBuilder($scope, $http, $log) {
     }
 
     $scope.print = function() {
+        $scope.printcards = [];
+        for(var i = 0; i < $scope.deck.cards.length; i++){
+            var card = $scope.deck.cards[i];
+            var quantity =  card.quantity;
+            for(var j = 0; j < quantity; j++){
+                $scope.printcards.push(card);
+            }
+        }
+        
         $scope.showDeckList = false;
         $scope.showDeck = false;
         $scope.showPrint = true;
