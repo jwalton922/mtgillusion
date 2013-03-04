@@ -13,10 +13,20 @@
     Search: <input type="text" data-ng-change="searchByName()" data-ng-model="searchText" placeholder="Card Name">
     <div id="searchResults">
         <ul>
-            <li data-ng-repeat="result in searchResults"><button>Add To Deck</button><button data-ng-click="viewCard(result)">View</button>{{result.name}}</li>
+            <li data-ng-repeat="result in searchResults">
+                Quantity: <input type="text" data-ng-mdoel="result.quantity">
+                <button data-ng-click="addToDeck(result)">Add To Deck</button>
+                <button data-ng-click="viewCard(result)">View</button>{
+                {result.name}}</li>
         </ul>
         <div id="cardDisplay">
             <img src="{{cardToView}}" alt="Hit View to see a card"/>
+        </div>
+        <div>
+            <h3>Deck</h3>
+            <ul>
+                <li data-ng-repeat="card in deck">{{card.quantity}} - {{card.name}}</li>
+            </ul>
         </div>
     </div>
     

@@ -15,7 +15,7 @@ function DeckBuilder($scope, $http, $log) {
 
         $http.get(url, {params: params}).success(function(xhr) {
             $log.log("Search results: " + angular.toJson(xhr));
-            $scope.searchResult = [];
+            $scope.searchResults = [];
             var results = xhr.Results
             for (var i = 0; i < results.length; i++) {
                 var searchResult = {};
@@ -24,6 +24,13 @@ function DeckBuilder($scope, $http, $log) {
             }
         });
 
+    }
+    
+    $scope.addToDeck = function(result){
+        var deckObj = {};
+        deckObj.name = result.name;
+        deckObj.quantity = result.quantity;
+        $scope.deck.push(deckObj);
     }
     
     $scope.viewCard = function(searchResult){
