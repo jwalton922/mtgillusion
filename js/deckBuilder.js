@@ -4,13 +4,13 @@ function DeckBuilder($scope, $http, $log) {
     $scope.searchText = "";
     $scope.searchResults = [];
     $scope.searchByName = function() {
-        var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
+//        var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
+        var url = "/search";
         var params = {};
         params.nameFragment = $scope.searchText;
-        params.callback = "JSON_CALLBACK";
-        params.dataType = "jsonp";
+        params.dataType = "json";
 
-        $http.jsonp(url, {params: params}).success(function(xhr) {
+        $http.get(url, {params: params}).success(function(xhr) {
             $log.log("Search results: "+angular.toJson(xhr));
         }
 
