@@ -14,7 +14,7 @@
     <div id="searchResults">
         <ul>
             <li data-ng-repeat="result in searchResults">
-                Quantity: <input type="text" data-ng-mdoel="result.quantity">
+                Quantity: <input style="width:20px;" type="text" data-ng-model="result.quantity">
                 <button data-ng-click="addToDeck(result)">Add To Deck</button>
                 <button data-ng-click="viewCard(result)">View</button>
                 {{result.name}}</li>
