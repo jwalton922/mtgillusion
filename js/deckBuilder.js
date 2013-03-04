@@ -19,7 +19,9 @@ function DeckBuilder($scope, $http, $log) {
             for (var i = 0; i < results.length; i++) {
                 var searchResult = {};
                 searchResult.name = results[i].Name;
+                searchResult.quantity = 1;
                 $scope.searchResults.push(searchResult);
+                
             }
         });
 
