@@ -11,8 +11,10 @@
 </head>
 <body data-ng-app data-ng-controller="DeckBuilder">
     Search: <input type="text" data-ng-change="searchByName()" data-ng-model="searchText" placeholder="Card Name">
-    <p>
-        {{searchText}}
-    </p>
+    <div id="searchResults">
+        <ul>
+            <li data-ng-repeat="result in searchResults">{{result.name}}</li>
+        </ul>
+    </div>
 </body>
 </html>
