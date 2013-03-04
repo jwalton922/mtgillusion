@@ -101,7 +101,7 @@ function DeckBuilder($scope, $http, $log) {
                         cardName = cardName.replace(" ", "_");
                     }
                     cardName += ".jpg";
-                    cards[j].image = cardName;
+                    cards[j].image = "/mtgImages/"+cardName;
                 }
             }
             $scope.decks = xhr;
