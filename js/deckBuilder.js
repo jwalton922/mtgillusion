@@ -8,6 +8,7 @@ function DeckBuilder($scope, $http, $log) {
         var params = {};
         params.nameFragment = $scope.searchText;
         params["JSON_CALLBACK"] = "$scope.processSearchResults";
+        params.dataType = "json";
 
         $http.jsonp(url, {params: params}).success(function(xhr) {
             $log.log("Search results: "+angular.toJson(xhr));
