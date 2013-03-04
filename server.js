@@ -2,7 +2,22 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs = require('fs');
-var http = require('http')
+var http = require('http');
+var mongodb = require('mongodb');
+var mongoHost = "dbh74.mongolab.com";
+var mongoPort = 27747;
+var server = new mongodb.Server(mongoHost, mongoPort, {});
+var deckCollection = null;
+new mongodb.Db('mtg', server, {}).open(function(error, client) {
+    if (error)
+        throw error;
+    deckCollection = new mongodb.Collection(client, 'decks');
+    client.authenticate("mtg", "mtg");
+    deckCollection.find({}, {limit: 10}).toArray(function(err, docs) {
+        console.dir(docs);
+    });
+});
+
 
 var httpCallback = function(res) {
     //console.log("response = "+JSON.stringify(response));
@@ -62,6 +77,7 @@ var SampleApp = function() {
 
         //  Local cache for static content.
         self.zcache['index.html'] = fs.readFileSync('./index.html');
+        self.zcache['decks.html'] = fs.readFileSync('./decks.html');
     };
 
 
@@ -109,12 +125,16 @@ var SampleApp = function() {
     };
 
 
-    self.createPostRoutes = function(){
+    self.createPostRoutes = function() {
         self.postRoutes = {};
-        
+
         self.postRoutes['/deck/create'] = function(req, res) {
-            console.log("saving deck: "+JSON.stringify(req.body));
-            
+            console.log("saving deck: " + JSON.stringify(req.body));
+            var data = req.body.data;
+            deckCollection.insert(data, {}, function(input1) {
+                res.send("Success creating deck");
+            })
+
         };
     }
 
@@ -137,13 +157,19 @@ var SampleApp = function() {
             var link = "http://i.imgur.com/kmbjB.png";
             res.send("<html><body><img src='" + link + "'></body></html>");
         };
-        
-        
-        self.routes['/deck'] = function(req, res){
-            console.log("/deck called");
+
+        self.routes['/decks/all'] = function(req, res) {
+            deckCollection.find({}).toArray(function(err, docs) {
+                res.send(docs);
+            });
         }
-        
-        self.routes["/deck/create"] = function(req,res){
+
+        self.routes['/decks'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('decks.html'));
+        }
+
+        self.routes["/deck/create"] = function(req, res) {
             console.log("get /deck/create called");
         }
 
@@ -196,6 +222,7 @@ var SampleApp = function() {
      *  the handlers.
      */
     self.initializeServer = function() {
+
         self.createRoutes();
         self.createPostRoutes();
         self.app = express.createServer();
@@ -205,14 +232,14 @@ var SampleApp = function() {
         self.app.use(express.bodyParser());
         //self.app.use(self.app.router);
         //  Add handlers for the app (from the routes).
-        for(var p in self.postRoutes){
-            console.log("creating post route: "+p);
+        for (var p in self.postRoutes) {
+            console.log("creating post route: " + p);
             self.app.post(p, self.postRoutes[p]);
         }
         for (var r in self.routes) {
             self.app.get(r, self.routes[r]);
         }
-        
+
     };
 
 

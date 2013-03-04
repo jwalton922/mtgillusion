@@ -11,6 +11,15 @@
         <script type="text/javascript" src="js/deckBuilder.js"></script>
     </head>
     <body data-ng-app data-ng-controller="DeckBuilder">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <a class="brand" href="#">Title</a>
+                <ul class="nav">
+                    <li class="active"><a href="#">Deck Builder</a></li>
+                    <li><a href="/decks">Decks</a></li>
+                </ul>
+            </div>
+        </div>
         Search: <input type="text" data-ng-change="searchByName()" data-ng-model="searchText" placeholder="Card Name">
         <div id="searchResults">
             <ul>
