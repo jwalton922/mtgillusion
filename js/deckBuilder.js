@@ -8,8 +8,8 @@ function DeckBuilder($scope, $http, $log) {
     
     $scope.removeFromDeck = function(card){
         var indexToRemove = -1;
-        for(var i = 0; i < $scope.deck.length; i++){
-            if(card.name === $scope.deck[i].name){
+        for(var i = 0; i < $scope.deck.cards.length; i++){
+            if(card.name === $scope.deck.cards[i].name){
                 indexToRemove = i;
             }
         }
