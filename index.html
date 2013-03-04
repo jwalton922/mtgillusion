@@ -16,8 +16,8 @@
             <li data-ng-repeat="result in searchResults">
                 Quantity: <input type="text" data-ng-mdoel="result.quantity">
                 <button data-ng-click="addToDeck(result)">Add To Deck</button>
-                <button data-ng-click="viewCard(result)">View</button>{
-                {result.name}}</li>
+                <button data-ng-click="viewCard(result)">View</button>
+                {{result.name}}</li>
         </ul>
         <div ng-show="cardToView" id="cardDisplay">
             <img src="{{cardToView}}" alt="Hit View to see a card"/>
