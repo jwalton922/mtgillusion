@@ -13,8 +13,12 @@
     Search: <input type="text" data-ng-change="searchByName()" data-ng-model="searchText" placeholder="Card Name">
     <div id="searchResults">
         <ul>
-            <li data-ng-repeat="result in searchResults">{{result.name}}</li>
+            <li data-ng-repeat="result in searchResults"><button>Add To Deck</button><button data-ng-click="viewCard(result)">View</button>{{result.name}}</li>
         </ul>
+        <div id="cardDisplay">
+            <img src="{{cardToView}}" alt="Hit View to see a card"/>
+        </div>
     </div>
+    
 </body>
 </html>
