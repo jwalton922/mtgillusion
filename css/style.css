@@ -1,0 +1,50 @@
+body {
+	background: url(../img/dark_wall.png);
+	padding-top: 0;
+	color: #efefef;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Gabriela', serif;
+	font-weight: normal;
+}
+
+#nav {
+	list-style: none;
+	margin-top: 20px;
+}
+
+#nav > li {
+	display: inline;
+	padding-right: 20px;
+}
+
+#cardDisplay {
+	margin: 14%;
+}
+
+#search-results, #deck-list {
+	list-style: none;
+	margin-left: 0;
+}
+
+#search-results > li {
+	margin-bottom: 10px;
+}
+
+#search-results > li > input {
+	margin-bottom: 0;
+}
+
+.result-name {
+	width: 200px;
+	display: inline-block;
+}
+
+.gapper {
+	margin-bottom: 20px;
+}
+
+.top-gap {
+	margin-top: 20px;
+}
