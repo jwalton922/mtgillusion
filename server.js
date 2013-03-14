@@ -18,6 +18,8 @@ new mongodb.Db('mtg', server, {}).open(function(error, client) {
     });
 });
 
+var neo4j = require('neo4j');
+var db = new neo4j.GraphDatabase('http://5c7d14ae5:579e8cded@2645f4a7d.hosted.neo4j.org:7343');
 
 var httpCallback = function(res) {
     //console.log("response = "+JSON.stringify(response));
@@ -208,8 +210,31 @@ var SampleApp = function() {
 //            });
         }
 
-        self.routes["/card"] = function(req, res) {
-            res.render('card.jade', {title: 'Card'});
+        self.routes["/card/:name"] = function(req, res) {
+            console.log("Looking for this card: " + req.params.name);
+//            db.getIndexedNodes("name","name", req.params.name, function(err, node) {
+//                if (err) {
+//                    console.err('Error saving new node to database:', err);
+//                } else {
+//                    console.log('Node saved to database with id:', JSON.stringify(node));
+//                    res.render('card.jade', {title: 'Card'});
+//                }
+//            });
+
+            var query = [
+                'START n=node(*)',
+                'MATCH n-[r]-x',
+                'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
+                'RETURN r.count,x.name'
+            ].join('\n');
+
+            db.query(query, {}, function(err, results) {
+                if(err) throw err;
+                console.log("Results: " + results.length);
+                res.render('card.jade', {"nodes": results, "name": req.params.name});
+                //res.send(results);
+            });
+
         };
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
