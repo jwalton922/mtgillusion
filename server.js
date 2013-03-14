@@ -208,6 +208,9 @@ var SampleApp = function() {
 //            });
         }
 
+        self.routes["/card"] = function(req, res) {
+            res.render('card.jade', {title: 'Card'});
+        };
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html'));
@@ -230,6 +233,7 @@ var SampleApp = function() {
         self.app.use("/js", express.static(__dirname + '/js'));
         self.app.use("/mtgImages", express.static(__dirname + '/mtgImages'));
         self.app.use(express.bodyParser());
+        self.app.set('views', __dirname + '/views');
         //self.app.use(self.app.router);
         //  Add handlers for the app (from the routes).
         for (var p in self.postRoutes) {
