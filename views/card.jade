@@ -2,15 +2,13 @@ doctype 5
 html(lang="en")
     head
         link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel="stylesheet")
-        script(type='text/javascript',src='lib/jquery-1.7.2.min.js')
-        script(type='text/javascript',src='lib/angular/angular.min.js')
-        title= title
+        title= name
     body
-        div.navbar
-            div.navbar-inner
-                a.brand(href="#") Title
-                ul.nav
-                    li.active
-                        a(href="#") Deck Builder
-                    li
-                        a(href="/decks") Decks
+        h1= name
+        img(src="http://placehold.it/312x445")
+        label Card Text Label
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse luctus mollis massa sit amet mollis. Maecenas mauris urna, dapibus eget sodales sit amet, tincidunt in dolor. Vestibulum malesuada ipsum sed lectus condimentum eget rhoncus libero placerat. Pellentesque condimentum purus vitae velit cursus scelerisque. Quisque et diam est, et blandit mi. Morbi eu massa ante, id ultrices nunc. Aliquam posuere lectus nec turpis commodo vestibulum molestie nulla volutpat. Nunc est tortor, egestas eu lobortis nec, pellentesque at tellus.
+
+        label Relationships
+        each node in nodes
+            p Count #{node["r.count"]} Name #{node["x.name"]}
