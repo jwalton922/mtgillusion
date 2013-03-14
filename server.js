@@ -257,6 +257,8 @@ var SampleApp = function() {
         self.app.use("/lib", express.static(__dirname + '/lib'));
         self.app.use("/js", express.static(__dirname + '/js'));
         self.app.use("/mtgImages", express.static(__dirname + '/mtgImages'));
+        self.app.use("/css", express.static(__dirname + '/css'));
+        self.app.use("/img", express.static(__dirname + '/img'));
         self.app.use(express.bodyParser());
         self.app.set('views', __dirname + '/views');
         //self.app.use(self.app.router);
