@@ -12,3 +12,15 @@
 # prevent your application from stopping cleanly or starting at all.
 # Application start and stop is subject to different timeouts
 # throughout the system.
+
+# Install the dependencies
+cd $OPENSHIFT_REPO_DIR
+$OPENSHIFT_DATA_DIR/bin/npm \
+    --cache="$OPENSHIFT_DATA_DIR".npm \
+    --tmp=$OPENSHIFT_TMP_DIR install
+
+export PATH=$OPENSHIFT_DATA_DIR/bin:$PATH
+
+# start the application
+nohup $OPENSHIFT_DATA_DIR/bin/node $OPENSHIFT_REPO_DIR/server.js >> $OPENSHIFT_NODEJS_LOG_DIR/server.log 2>&1&
+exit 0
