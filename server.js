@@ -236,8 +236,18 @@ var SampleApp = function() {
                 if(!sets){
                     sets = "Info not uploaded";
                 }
+                var done = false;
+                var imageName = "/mtgImages/"+req.params.name;
+                while(!done){
+                    if(imageName.indexOf(" ") >=0){
+                        imageName = imageName.replace(" ", "_");
+                    } else {
+                        done = true;
+                    }
+                }
+                console.log("Image name: "+imageName)
                 console.log("Sets: "+sets);
-                res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets});
+                res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
                 //res.send(results);
             });
 
