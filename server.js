@@ -229,25 +229,32 @@ var SampleApp = function() {
             ].join('\n');
 
             db.query(query, {}, function(err, results) {
-                if(err) throw err;
+                if (err)
+                    throw err;
                 console.log("Results: " + results.length);
                 var sets = results[0]['n.sets'];
-                
-                if(!sets){
+
+                if (!sets) {
                     sets = "Info not uploaded";
                 }
                 var done = false;
-                var imageName = "/mtgImages/"+req.params.name+".jpg";
-                while(!done){
-                    if(imageName.indexOf(" ") >=0){
+                var imageName = "/mtgImages/" + req.params.name + ".jpg";
+                while (!done) {
+                    if (imageName.indexOf(" ") >= 0) {
                         imageName = imageName.replace(" ", "_");
                     } else {
                         done = true;
                     }
                 }
-                console.log("Image name: "+imageName)
-                console.log("Sets: "+sets);
-                res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
+                console.log("Image name: " + imageName)
+                console.log("Sets: " + sets);
+                try {
+                    res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
+                } catch (err) {
+                    console.log("Error: " + err);
+                    res.send("Card info not uploaded");
+
+                }
                 //res.send(results);
             });
 
