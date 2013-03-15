@@ -224,7 +224,7 @@ var SampleApp = function() {
             var query = [
                 'START n=node(*)',
                 'MATCH n-[r]-x',
-                'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
+                'WHERE has(n.sets) AND, has(n.name) AND n.name = "' + req.params.name + '"',
                 'RETURN r.count,x.name, n.sets'
             ].join('\n');
 
