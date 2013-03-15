@@ -225,13 +225,15 @@ var SampleApp = function() {
                 'START n=node(*)',
                 'MATCH n-[r]-x',
                 'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
-                'RETURN r.count,x.name'
+                'RETURN r.count,x.name, n.sets'
             ].join('\n');
 
             db.query(query, {}, function(err, results) {
                 if(err) throw err;
                 console.log("Results: " + results.length);
-                res.render('card.jade', {"nodes": results, "name": req.params.name});
+                var sets = results[0]['n.sets'];
+                console.log("Sets: "+sets);
+                res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets});
                 //res.send(results);
             });
 

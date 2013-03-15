@@ -5,10 +5,15 @@ html(lang="en")
         title= name
     body
         h1= name
-        img(src="http://placehold.it/312x445")
+        img(src="/mtgImages/"+name)
+        P Sets: #{sets}
         label Card Text Label
-        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse luctus mollis massa sit amet mollis. Maecenas mauris urna, dapibus eget sodales sit amet, tincidunt in dolor. Vestibulum malesuada ipsum sed lectus condimentum eget rhoncus libero placerat. Pellentesque condimentum purus vitae velit cursus scelerisque. Quisque et diam est, et blandit mi. Morbi eu massa ante, id ultrices nunc. Aliquam posuere lectus nec turpis commodo vestibulum molestie nulla volutpat. Nunc est tortor, egestas eu lobortis nec, pellentesque at tellus.
+        
 
         label Relationships
         each node in nodes
-            p Count #{node["r.count"]} Name #{node["x.name"]}
+            p 
+                a(href='/card/'+node['x.name'])
+                    =node["x.name"]
+                
+                span(style='margin-left:10px') Score: #{node["r.count"]}
