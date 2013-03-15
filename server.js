@@ -237,7 +237,7 @@ var SampleApp = function() {
                     sets = "Info not uploaded";
                 }
                 var done = false;
-                var imageName = "/mtgImages/"+req.params.name;
+                var imageName = "/mtgImages/"+req.params.name+".jpg";
                 while(!done){
                     if(imageName.indexOf(" ") >=0){
                         imageName = imageName.replace(" ", "_");
