@@ -6,7 +6,7 @@ lib-cov
 *.out
 *.pid
 *.gz
-
+mtgImages
 pids
 logs
 results

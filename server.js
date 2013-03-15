@@ -232,10 +232,11 @@ var SampleApp = function() {
                 if(err) throw err;
                 console.log("Results: " + results.length);
                 var sets = results[0]['n.sets'];
-                console.log("Sets: "+sets);
+                
                 if(!sets){
                     sets = "Info not uploaded";
                 }
+                console.log("Sets: "+sets);
                 res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets});
                 //res.send(results);
             });
