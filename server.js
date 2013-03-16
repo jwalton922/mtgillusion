@@ -224,7 +224,7 @@ var SampleApp = function() {
             console.log("Before query");
             var nodeQuery = [
                 'START n=node(*)',
-                'WHERE has(n.name) and n.name =' + req.params.name + "'",
+                'WHERE has(n.name) and n.name = "'+req.params.name + '"',
                 'return n'
             ].join('\n');
             try {
