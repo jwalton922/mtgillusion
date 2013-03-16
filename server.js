@@ -212,6 +212,7 @@ var SampleApp = function() {
 
         self.routes["/card/:name"] = function(req, res) {
             console.log("Looking for this card: " + req.params.name);
+
 //            db.getIndexedNodes("name","name", req.params.name, function(err, node) {
 //                if (err) {
 //                    console.err('Error saving new node to database:', err);
@@ -227,41 +228,44 @@ var SampleApp = function() {
                 'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
                 'RETURN r.count,x.name, n.sets'
             ].join('\n');
+            try {
+                db.query(query, {}, function(err, results) {
+                    if (err)
+                        throw err;
+                    console.log("Results: " + results.length);
+                    if (results.length > 0) {
+                        var sets = results[0]['n.sets'];
 
-            db.query(query, {}, function(err, results) {
-                if (err)
-                    throw err;
-                console.log("Results: " + results.length);
-                if (results.length > 0) {
-                    var sets = results[0]['n.sets'];
-
-                    if (!sets) {
-                        sets = "Info not uploaded";
-                    }
-                    var done = false;
-                    var imageName = "/mtgImages/" + req.params.name + ".jpg";
-                    while (!done) {
-                        if (imageName.indexOf(" ") >= 0) {
-                            imageName = imageName.replace(" ", "_");
-                        } else {
-                            done = true;
+                        if (!sets) {
+                            sets = "Info not uploaded";
                         }
-                    }
-                    console.log("Image name: " + imageName)
-                    console.log("Sets: " + sets);
-                    try {
-                        res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
-                    } catch (err) {
-                        console.log("Error: " + err);
-                        res.send("Card info not uploaded");
+                        var done = false;
+                        var imageName = "/mtgImages/" + req.params.name + ".jpg";
+                        while (!done) {
+                            if (imageName.indexOf(" ") >= 0) {
+                                imageName = imageName.replace(" ", "_");
+                            } else {
+                                done = true;
+                            }
+                        }
+                        console.log("Image name: " + imageName)
+                        console.log("Sets: " + sets);
+                        try {
+                            res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
+                        } catch (err) {
+                            console.log("Error: " + err);
+                            res.send("Card info not uploaded");
 
+                        }
+                    } else {
+                        console.log("No results");
+                        res.send(results);
                     }
-                } else {
-                    console.log("No results");
-                    res.send(results);
-                }
-                //res.send(results);
-            });
+                    //res.send(results);
+                });
+            } catch (err) {
+                console.log("Error querying: err");
+            }
 
         };
         self.routes['/'] = function(req, res) {
