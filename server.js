@@ -220,7 +220,7 @@ var SampleApp = function() {
 //                    res.render('card.jade', {title: 'Card'});
 //                }
 //            });
-
+            console.log("Before query");
             var query = [
                 'START n=node(*)',
                 'MATCH n-[r]-x',
