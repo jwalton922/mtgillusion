@@ -224,7 +224,7 @@ var SampleApp = function() {
             console.log("Before query");
             var nodeQuery = [
                 'START n=node(*)',
-                'WHERE has(n.name) and n.name = "'+req.params.name + '"',
+                'WHERE has(n.name) and n.name = "' + req.params.name + '"',
                 'return n'
             ].join('\n');
             try {
@@ -232,7 +232,7 @@ var SampleApp = function() {
                     if (err) {
                         throw err;
                     } else {
-                        console.log("card query results: "+JSON.stringify(cardResults));
+                        console.log("card query results: " + JSON.stringify(cardResults));
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
@@ -245,28 +245,25 @@ var SampleApp = function() {
                                 if (err)
                                     throw err;
                                 console.log("Results: " + results.length);
-                                if (results.length > 0) {
-                                    var done = false;
-                                    var imageName = "/mtgImages/" + req.params.name + ".jpg";
-                                    while (!done) {
-                                        if (imageName.indexOf(" ") >= 0) {
-                                            imageName = imageName.replace(" ", "_");
-                                        } else {
-                                            done = true;
-                                        }
-                                    }
-                                    console.log("Image name: " + imageName)
-                                    try {
-                                        res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardResults, "imageName": imageName});
-                                    } catch (err) {
-                                        console.log("Error: " + err);
-                                        res.send("Card info not uploaded");
 
+                                var done = false;
+                                var imageName = "/mtgImages/" + req.params.name + ".jpg";
+                                while (!done) {
+                                    if (imageName.indexOf(" ") >= 0) {
+                                        imageName = imageName.replace(" ", "_");
+                                    } else {
+                                        done = true;
                                     }
-                                } else {
-                                    console.log("No results");
-                                    res.send(results);
                                 }
+                                console.log("Image name: " + imageName)
+                                try {
+                                    res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardResults, "imageName": imageName});
+                                } catch (err) {
+                                    console.log("Error: " + err);
+                                    res.send("Card info not uploaded");
+
+                                }
+
                                 //res.send(results);
                             });
                         } catch (err) {
