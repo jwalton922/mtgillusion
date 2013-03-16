@@ -228,10 +228,11 @@ var SampleApp = function() {
                 'return n'
             ].join('\n');
             try {
-                db.query(nodeQuery, {}, function(err, nodeResults) {
+                db.query(nodeQuery, {}, function(err, cardResults) {
                     if (err) {
                         throw err;
                     } else {
+                        console.log("card query results: "+JSON.stringify(cardResults));
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
@@ -256,7 +257,7 @@ var SampleApp = function() {
                                     }
                                     console.log("Image name: " + imageName)
                                     try {
-                                        res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": nodeResults, "imageName": imageName});
+                                        res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardResults, "imageName": imageName});
                                     } catch (err) {
                                         console.log("Error: " + err);
                                         res.send("Card info not uploaded");
