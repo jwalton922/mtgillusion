@@ -235,8 +235,9 @@ var SampleApp = function() {
                         if(cardResults.length <= 0){
                             res.send("Could not find card");
                         }
+                        console.log("card query results: " + JSON.stringify(cardResults));
                         var cardInfo = cardResults[0].data
-                        console.log("card query results: " + JSON.stringify(cardInfo));
+                        console.log("card info: " + JSON.stringify(cardInfo));
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
