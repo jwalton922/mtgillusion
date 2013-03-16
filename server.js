@@ -232,7 +232,11 @@ var SampleApp = function() {
                     if (err) {
                         throw err;
                     } else {
-                        console.log("card query results: " + JSON.stringify(cardResults));
+                        if(cardResults.length <= 0){
+                            res.send("Could not find card");
+                        }
+                        var cardInfo = cardResults[0].data
+                        console.log("card query results: " + JSON.stringify(cardInfo));
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
@@ -257,7 +261,7 @@ var SampleApp = function() {
                                 }
                                 console.log("Image name: " + imageName)
                                 try {
-                                    res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardResults, "imageName": imageName});
+                                    res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardInfo, "imageName": imageName});
                                 } catch (err) {
                                     console.log("Error: " + err);
                                     res.send("Card info not uploaded");
