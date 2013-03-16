@@ -222,50 +222,62 @@ var SampleApp = function() {
 //                }
 //            });
             console.log("Before query");
-            var query = [
+            var nodeQuery = [
                 'START n=node(*)',
-                'MATCH n-[r]-x',
-                'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
-                'RETURN r.count,x.name, n.sets'
+                'WHERE has(n.name) and n.name =' + req.params.name + "'",
+                'return n'
             ].join('\n');
             try {
-                db.query(query, {}, function(err, results) {
-                    if (err)
+                db.query(nodeQuery, {}, function(err, nodeResults) {
+                    if (err) {
                         throw err;
-                    console.log("Results: " + results.length);
-                    if (results.length > 0) {
-                        var sets = results[0]['n.sets'];
-
-                        if (!sets) {
-                            sets = "Info not uploaded";
-                        }
-                        var done = false;
-                        var imageName = "/mtgImages/" + req.params.name + ".jpg";
-                        while (!done) {
-                            if (imageName.indexOf(" ") >= 0) {
-                                imageName = imageName.replace(" ", "_");
-                            } else {
-                                done = true;
-                            }
-                        }
-                        console.log("Image name: " + imageName)
-                        console.log("Sets: " + sets);
-                        try {
-                            res.render('card.jade', {"nodes": results, "name": req.params.name, "sets": sets, "imageName": imageName});
-                        } catch (err) {
-                            console.log("Error: " + err);
-                            res.send("Card info not uploaded");
-
-                        }
                     } else {
-                        console.log("No results");
-                        res.send(results);
+                        var query = [
+                            'START n=node(*)',
+                            'MATCH n-[r]-x',
+                            'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
+                            'RETURN r.count,x.name'
+                        ].join('\n');
+
+                        try {
+                            db.query(query, {}, function(err, results) {
+                                if (err)
+                                    throw err;
+                                console.log("Results: " + results.length);
+                                if (results.length > 0) {
+                                    var done = false;
+                                    var imageName = "/mtgImages/" + req.params.name + ".jpg";
+                                    while (!done) {
+                                        if (imageName.indexOf(" ") >= 0) {
+                                            imageName = imageName.replace(" ", "_");
+                                        } else {
+                                            done = true;
+                                        }
+                                    }
+                                    console.log("Image name: " + imageName)
+                                    try {
+                                        res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": nodeResults, "imageName": imageName});
+                                    } catch (err) {
+                                        console.log("Error: " + err);
+                                        res.send("Card info not uploaded");
+
+                                    }
+                                } else {
+                                    console.log("No results");
+                                    res.send(results);
+                                }
+                                //res.send(results);
+                            });
+                        } catch (err) {
+                            console.log("Error querying: err");
+                        }
                     }
-                    //res.send(results);
                 });
             } catch (err) {
-                console.log("Error querying: err");
+                console.log("Node query error");
             }
+
+
 
         };
         self.routes['/'] = function(req, res) {
