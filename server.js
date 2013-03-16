@@ -235,7 +235,7 @@ var SampleApp = function() {
                         if(cardResults.length <= 0){
                             res.send("Could not find card");
                         }
-                        console.log("card query results: " + JSON.stringify(cardResults));
+                        //console.log("card query results: " + JSON.stringify(cardResults));
                         var cardInfo = cardResults[0].n.data
                         console.log("card info: " + JSON.stringify(cardInfo));
                         var query = [
