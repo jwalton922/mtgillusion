@@ -49,6 +49,18 @@
                     <div data-ng-show="cardToView" id="cardDisplay">
                         <img src="{{cardToView}}" alt="Hit View to see a card"/>
                     </div>
+                    <div>
+                        <h4>Suggested Cards</h4>
+                        <ul>
+                            <li data-ng-repeat="suggestion in cardToViewSuggestions">
+                                <a data-ng-click="viewCard(suggestion)">{{suggestion.name}}</a> Score: {{suggestion.count}}
+                                <p>
+                                    Quantity: <input style="width:20px;" type="text" data-ng-model="result.quantity">
+                                    <button class="btn btn-success" data-ng-click="addToDeck(suggestion)">Add To Deck</button>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="span4">
                     <h3>Name your deck:</h3>

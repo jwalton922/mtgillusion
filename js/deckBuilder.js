@@ -9,6 +9,7 @@ function DeckBuilder($scope, $http, $log) {
     $scope.showDeckList = true;
     $scope.showDeck = false;
     $scope.showPrint = false;
+    $scope.cardToViewSuggestions = [];
 
     $scope.removeFromDeck = function(card) {
         var indexToRemove = -1;
@@ -38,14 +39,14 @@ function DeckBuilder($scope, $http, $log) {
 
     $scope.print = function() {
         $scope.printcards = [];
-        for(var i = 0; i < $scope.deck.cards.length; i++){
+        for (var i = 0; i < $scope.deck.cards.length; i++) {
             var card = $scope.deck.cards[i];
-            var quantity =  card.quantity;
-            for(var j = 0; j < quantity; j++){
+            var quantity = card.quantity;
+            for (var j = 0; j < quantity; j++) {
                 $scope.printcards.push(card);
             }
         }
-        
+
         $scope.showDeckList = false;
         $scope.showDeck = false;
         $scope.showPrint = true;
@@ -83,12 +84,30 @@ function DeckBuilder($scope, $http, $log) {
     $scope.viewCard = function(searchResult) {
         $log.log("View card called on: " + angular.toJson(searchResult));
         var cardName = searchResult.name.toUpperCase();
+        $scope.findRelatedCards(cardName);
         while (cardName.indexOf(" ") > 0) {
             cardName = cardName.replace(" ", "_");
         }
         cardName += ".jpg";
         $log.log("viewing card: " + cardName);
         $scope.cardToView = "/mtgImages/" + cardName;
+
+    }
+
+    $scope.findRelatedCards = function(cardName) {
+        $http.get("/card/" + cardName + "/related").success(function(xhr) {
+            
+            var results = [];
+            for(var i =0; i < xhr.length; i++){
+                var resultObj = {};
+                resultObj.quantity = 1;
+                resultObj.count = xhr[i]["r.count"];
+                resultObj.name = xhr[i]["x.name"];
+                results.push(resultObj);
+            }
+            console.log("cards related to " + cardName + ": " + angular.toJson(results));
+            $scope.cardToViewSuggestions = results;
+        });
     }
 
     $scope.saveDeck = function() {
@@ -110,7 +129,7 @@ function DeckBuilder($scope, $http, $log) {
                         cardName = cardName.replace(" ", "_");
                     }
                     cardName += ".jpg";
-                    cards[j].image = "/mtgImages/"+cardName;
+                    cards[j].image = "/mtgImages/" + cardName;
                 }
             }
             $scope.decks = xhr;

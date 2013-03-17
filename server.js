@@ -210,6 +210,32 @@ var SampleApp = function() {
 //            });
         }
 
+        self.routes["/card/:name/related"] = function(req, res) {
+            console.log("Looking for cards related to " + req.params.name);
+            var query = [
+                'START n=node(*)',
+                'MATCH n-[r]-x',
+                'WHERE has(n.name) AND n.name = "' + req.params.name + '" AND r.count > 2',
+                'RETURN r.count,x.name'
+            ].join('\n');
+
+            try {
+                db.query(query, {}, function(err, results) {
+                    if (err) {
+                        throw err;
+                        res.send("Error");
+                        return;
+                    } else {
+                        console.log("Results: " + results.length);
+                        res.send(results);
+                    }
+                });
+            } catch (err) {
+                console.log("Error querying: err");
+                res.send("Error");
+            }
+        }
+
         self.routes["/card/:name"] = function(req, res) {
             console.log("Looking for this card: " + req.params.name);
 
@@ -232,7 +258,7 @@ var SampleApp = function() {
                     if (err) {
                         throw err;
                     } else {
-                        if(cardResults.length <= 0){
+                        if (cardResults.length <= 0) {
                             res.send("Could not find card");
                             return;
                         }
