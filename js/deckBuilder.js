@@ -105,6 +105,9 @@ function DeckBuilder($scope, $http, $log) {
                 resultObj.name = xhr[i]["x.name"];
                 results.push(resultObj);
             }
+            results.sort(function(a,b){
+                return (b.count - a.count);
+            });
             console.log("cards related to " + cardName + ": " + angular.toJson(results));
             $scope.cardToViewSuggestions = results;
         });
