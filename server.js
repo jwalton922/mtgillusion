@@ -177,7 +177,7 @@ var SampleApp = function() {
 
         self.routes["/search"] = function(req, res) {
             var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
-            console.log("search called with params: " + JSON.stringify(req.query));
+            console.log("search called with params: " + encodeURIComponent(JSON.stringify(req.query)));
             var options = {
                 host: 'gatherer.wizards.com',
                 path: "/Handlers/InlineCardSearch.ashx?nameFragment=" + req.query.nameFragment
