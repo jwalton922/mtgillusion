@@ -3,12 +3,31 @@ html(lang="en")
     head
         link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel="stylesheet")
         title= name
-    body
+    body.container-fluid
         h1= name
         img(src=imageName)
-        P Node info: #{cardInfo}
+        table.table.table-striped
+            tbody
+                tr
+                    td rules
+                    td #{cardInfo.rules}
+                tr
+                    td artist
+                    td #{cardInfo.artist}
+                tr
+                    td rulings
+                    td #{cardInfo.rulings}
+                tr
+                    td type
+                    td #{cardInfo.type}
+                tr
+                    td flavor
+                    td #{cardInfo.flavor}
+                tr
+                    td rarity
+                    td #{cardInfo.rarity}
+
         label Card Text Label
-        
 
         label Relationships
         each node in nodes

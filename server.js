@@ -200,22 +200,15 @@ var SampleApp = function() {
                 proxy_request.end();
             });
 
-
-//            console.log("Making request: " + JSON.stringify(options));
-//            console.log("made a change");
-//            http.request(options, httpCallback).end();
-            //console.log("searching for: "+req.params["nameFragment"]);
-//            $.get(url + "?nameFragment=" + req.params.nameFragment).success(function(xhr) {
-//                res.send(xhr);
-//            });
         }
 
         self.routes["/card/:name/related"] = function(req, res) {
-            console.log("Looking for cards related to " + req.params.name);
+            var name = req.params.name.toUpperCase();
+            console.log("Looking for cards related to " + name);
             var query = [
                 'START n=node(*)',
                 'MATCH n-[r]-x',
-                'WHERE has(n.name) AND n.name = "' + req.params.name + '" AND r.count > 2',
+                'WHERE has(n.name) AND n.name = "' + name + '" AND r.count > 2',
                 'RETURN r.count,x.name'
             ].join('\n');
 
@@ -237,20 +230,13 @@ var SampleApp = function() {
         }
 
         self.routes["/card/:name"] = function(req, res) {
-            console.log("Looking for this card: " + req.params.name);
+            var name = req.params.name.toUpperCase();
+            console.log("Looking for this card: " + name);
 
-//            db.getIndexedNodes("name","name", req.params.name, function(err, node) {
-//                if (err) {
-//                    console.err('Error saving new node to database:', err);
-//                } else {
-//                    console.log('Node saved to database with id:', JSON.stringify(node));
-//                    res.render('card.jade', {title: 'Card'});
-//                }
-//            });
             console.log("Before query");
             var nodeQuery = [
                 'START n=node(*)',
-                'WHERE has(n.name) and n.name = "' + req.params.name + '"',
+                'WHERE has(n.name) and n.name = "' + name + '"',
                 'return n'
             ].join('\n');
             try {
@@ -268,18 +254,19 @@ var SampleApp = function() {
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
-                            'WHERE has(n.name) AND n.name = "' + req.params.name + '"',
-                            'RETURN r.count,x.name'
+                            'WHERE has(n.name) AND n.name = "' + name + '"',
+                            'RETURN r.count,x.name',
+                            'ORDER BY r.count DESC'
                         ].join('\n');
 
                         try {
                             db.query(query, {}, function(err, results) {
                                 if (err)
                                     throw err;
-                                console.log("Results: " + results.length);
+                                //console.log("Results: " + results.length);
 
                                 var done = false;
-                                var imageName = "/mtgImages/" + req.params.name + ".jpg";
+                                var imageName = "/mtgImages/" + name + ".jpg";
                                 while (!done) {
                                     if (imageName.indexOf(" ") >= 0) {
                                         imageName = imageName.replace(" ", "_");
@@ -287,9 +274,9 @@ var SampleApp = function() {
                                         done = true;
                                     }
                                 }
-                                console.log("Image name: " + imageName)
+                                //console.log("Image name: " + imageName)
                                 try {
-                                    res.render('card.jade', {"nodes": results, "name": req.params.name, "cardInfo": cardInfo, "imageName": imageName});
+                                    res.render('card.jade', {"nodes": results, "name": name, "cardInfo": cardInfo, "imageName": imageName});
                                 } catch (err) {
                                     console.log("Error: " + err);
                                     res.send("Card info not uploaded");
@@ -327,7 +314,9 @@ var SampleApp = function() {
 
         self.createRoutes();
         self.createPostRoutes();
-        self.app = express.createServer();
+
+        //self.app = express.createServer(); remove depercated api
+        self.app = express();
         self.app.use("/lib", express.static(__dirname + '/lib'));
         self.app.use("/js", express.static(__dirname + '/js'));
         self.app.use("/mtgImages", express.static(__dirname + '/mtgImages'));
