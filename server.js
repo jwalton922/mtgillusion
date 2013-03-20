@@ -233,7 +233,7 @@ var SampleApp = function() {
             var name = req.params.name.toUpperCase();
             console.log("Looking for this card: " + name);
 
-            console.log("Before query");
+//            console.log("Before query");
             var nodeQuery = [
                 'START n=node(*)',
                 'WHERE has(n.name) and n.name = "' + name + '"',
@@ -250,7 +250,7 @@ var SampleApp = function() {
                         }
                         //console.log("card query results: " + JSON.stringify(cardResults));
                         var cardInfo = cardResults[0].n.data
-                        console.log("card info: " + JSON.stringify(cardInfo));
+//                        console.log("card info: " + JSON.stringify(cardInfo));
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
