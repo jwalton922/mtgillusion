@@ -150,10 +150,6 @@ var SampleApp = function() {
     self.createRoutes = function() {
         self.routes = {};
 
-        // Routes for /health, /asciimo and /
-        self.routes['/health'] = function(req, res) {
-            res.send('1');
-        };
 
         self.routes['/asciimo'] = function(req, res) {
             var link = "http://i.imgur.com/kmbjB.png";
@@ -293,7 +289,6 @@ var SampleApp = function() {
             } catch (err) {
                 console.log("Node query error");
             }
-
 
 
         };
