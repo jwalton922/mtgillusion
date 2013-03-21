@@ -321,7 +321,7 @@ var SampleApp = function() {
             try {
                 //res.render('deckbuilder.jade', {decks: docs});
                 res.setHeader('Content-Type', 'text/html');
-                res.send(self.cache_get('deckBuilder.html'));
+                res.send(self.cache_get('deckbuilder.html'));
             } catch (err) {
                 console.log("Error rendering set page: " + err);
             }
