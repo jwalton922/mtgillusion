@@ -8,11 +8,14 @@ var mongoHost = "dbh74.mongolab.com";
 var mongoPort = 27747;
 var server = new mongodb.Server(mongoHost, mongoPort, {});
 var deckCollection = null;
+var cardCollection = null;
 new mongodb.Db('mtg', server, {}).open(function(error, client) {
     if (error)
         throw error;
-    deckCollection = new mongodb.Collection(client, 'decks');
+
     client.authenticate("mtg", "mtg");
+    deckCollection = new mongodb.Collection(client, 'decks');
+    cardCollection = new mongodb.Collection(client, 'cardInfo');
     deckCollection.find({}, {limit: 10}).toArray(function(err, docs) {
         console.dir(docs);
     });
@@ -300,10 +303,44 @@ var SampleApp = function() {
         self.routes['/deckbuilder'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             deckCollection.find({}).toArray(function(err, docs) {
-                res.render('deckbuilder.jade', {decks: docs});
+                if (err) {
+                    console.log("Error find decks: " + err);
+                } else {
+                    try {
+                        res.render('deckbuilder.jade', {decks: docs});
+                    } catch (err) {
+                        console.log("Error rendering set page: " + err);
+                    }
+                }
+
+
             });
 
         };
+
+        self.routes['/set/:name'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            console.log("Searching for cards in set: "+req.params.name);
+            var searchObj = {"sets": {"$regex": req.params.name, "$options": "i"}}
+            //var reg = new RegExp("'"+req.params.name+"'", "i");
+//            var reg = /^ravnica/i
+//            console.log("REGEX = "+JSON.stringify(reg));
+//            var searchObj = {"sets": {"$regex" : reg}};
+            console.log("Search object: "+JSON.stringify(searchObj));
+            cardCollection.find(searchObj).toArray(function(err, docs) {
+                if (err) {
+                    console.log("Error finding cards in set: " + req.params.name);
+                } else {
+                    try {
+                        console.log("Found "+docs.length+" cards");
+                        res.render('set.jade', {name : req.params.name, cards: docs});
+                    } catch (err) {
+                        console.log("Error rendering set page: " + err);
+                    }
+                }
+            });
+            ;
+        }
     };
 
 
