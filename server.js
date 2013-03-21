@@ -228,6 +228,14 @@ var SampleApp = function() {
                 res.render('deck.jade', {deck: docs[0], name: name});
             });
         };
+
+        self.routes["/deck/:name/print"] = function(req, res) {
+            var name = req.params.name;
+            deckCollection.find({"name": name}).toArray(function(err, docs) {
+                res.render('printdeck.jade', {deck: docs[0], name: name});
+            });
+        };
+
         self.routes["/card/:name"] = function(req, res) {
             var name = req.params.name.toUpperCase();
             console.log("Looking for this card: " + name);
@@ -264,15 +272,9 @@ var SampleApp = function() {
                                     throw err;
                                 //console.log("Results: " + results.length);
 
-                                var done = false;
-                                var imageName = "/mtgImages/" + name + ".jpg";
-                                while (!done) {
-                                    if (imageName.indexOf(" ") >= 0) {
-                                        imageName = imageName.replace(" ", "_");
-                                    } else {
-                                        done = true;
-                                    }
-                                }
+
+                                var imageName = "/mtgImages/" + name.replace(/ /g, '_') + ".jpg";
+
                                 //console.log("Image name: " + imageName)
                                 try {
                                     res.render('card.jade', {"nodes": results, "name": name, "cardInfo": cardInfo, "imageName": imageName});
