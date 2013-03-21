@@ -84,6 +84,8 @@ var SampleApp = function() {
         self.zcache['index.html'] = fs.readFileSync('./index.html');
         self.zcache['decks.html'] = fs.readFileSync('./decks.html');
         self.zcache['deckbuilder.html'] = fs.readFileSync('./deckbuilder.html');
+        self.zcache['.htaccess'] = fs.readFileSync('./.htaccess');
+        self.zcache['robots.txt'] = fs.readFileSync('./robots.txt');
     };
 
 
@@ -313,6 +315,16 @@ var SampleApp = function() {
         self.routes['/'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html'));
+        };
+
+        self.routes['/.htaccess'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('.htaccess'));
+        };
+
+        self.routes['/robots.txt'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('robots.txt'));
         };
 
         self.routes['/deckBuilder'] = function(req, res) {
