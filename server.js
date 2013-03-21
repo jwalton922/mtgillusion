@@ -86,6 +86,7 @@ var SampleApp = function() {
         self.zcache['deckbuilder.html'] = fs.readFileSync('./deckbuilder.html');
         self.zcache['.htaccess'] = fs.readFileSync('./.htaccess');
         self.zcache['robots.txt'] = fs.readFileSync('./robots.txt');
+        self.zcache['googleverification'] = fs.readFileSync('./googleb5105f5530fd0cb9.html');
     };
 
 
@@ -247,7 +248,15 @@ var SampleApp = function() {
         self.routes["/deck/:name/print"] = function(req, res) {
             var name = req.params.name;
             deckCollection.find({"name": name}).toArray(function(err, docs) {
-                res.render('printdeck.jade', {deck: docs[0], name: name});
+                var cards = [];
+                for(var i = 0; i < docs[0].cards.length; i++){
+                    var card = docs[0].cards[i];
+                    var number = card.quantity;
+                    for(var j = 0; j < number; j++){
+                        cards.push(card);
+                    }
+                } 
+                res.render('printdeck.jade', {deck: docs[0], cards: cards,name: name});
             });
         };
 
@@ -362,6 +371,11 @@ var SampleApp = function() {
                 }
             });
             ;
+        };
+        
+        self.routes['/googleb5105f5530fd0cb9.html'] = function(req, res){
+            res.setHeader('Content-Type', 'text/html');
+            res.send(self.cache_get('googleverification'));
         }
     };
 
