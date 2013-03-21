@@ -1,38 +1,39 @@
-doctype 5
-html(lang="en")
-    head
-        link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel="stylesheet")
-        title= name
-    body.container-fluid
-        h1= name
-        img(src=imageName, alt=name)
-        table.table.table-striped
-            tbody
-                tr
-                    td rules
-                    td #{cardInfo.rules}
-                tr
-                    td artist
-                    td #{cardInfo.artist}
-                tr
-                    td rulings
-                    td #{cardInfo.rulings}
-                tr
-                    td type
-                    td #{cardInfo.type}
-                tr
-                    td flavor
-                    td #{cardInfo.flavor}
-                tr
-                    td rarity
-                    td #{cardInfo.rarity}
+extends layout
 
-        label Card Text Label
+block head
+    title= name
+    meta(name="description", content="#{name} A free deck building site for Magic: The Gathering with easy to use tools including our powerful card suggestion engine.")
+    meta(name="keywords", content="#{name} #{cardInfo.rules} magic the gathering combos card suggestion engine MTG deck building proxy proxies print printing build node graph")
+block content
+    h1= name
+    img(src=imageName, alt=name)
+    table.table
+        tbody
+            tr
+                td rules
+                td #{cardInfo.rules}
+            tr
+                td artist
+                td #{cardInfo.artist}
+            tr
+                td rulings
+                td #{cardInfo.rulings}
+            tr
+                td type
+                td #{cardInfo.type}
+            tr
+                td flavor
+                td #{cardInfo.flavor}
+            tr
+                td rarity
+                td #{cardInfo.rarity}
 
-        label Relationships
-        each node in nodes
-            p 
-                a(href='/card/'+node['x.name'])
-                    =node["x.name"]
-                
-                span(style='margin-left:10px') Score: #{node["r.count"]}
+    label Card Text Label
+
+    label Relationships
+    each node in nodes
+        p 
+            a(href='/card/'+node['x.name'])
+                =node["x.name"]
+
+            span(style='margin-left:10px') Score: #{node["r.count"]}
