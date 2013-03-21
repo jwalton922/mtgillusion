@@ -1,5 +1,5 @@
 body {
-	background: url(../img/brown_wall.png);
+	background: url(../img/light_wall.png);
 	padding-top: 0;
 	color: #efefef;
 }
@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #top-bar {
-	background: url(../img/light_wall.png);
+	background: url(../img/brown_wall.png);
 	border-bottom: 2px solid #579;
 }
 
