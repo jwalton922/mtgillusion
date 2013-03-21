@@ -83,6 +83,7 @@ var SampleApp = function() {
         //  Local cache for static content.
         self.zcache['index.html'] = fs.readFileSync('./index.html');
         self.zcache['decks.html'] = fs.readFileSync('./decks.html');
+        self.zcache['deckBuilder.html'] = fs.readFileSync('./deckBuilder.html');
     };
 
 
@@ -161,7 +162,19 @@ var SampleApp = function() {
 
         self.routes['/decks'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
-            res.send(self.cache_get('decks.html'));
+            deckCollection.find({}).toArray(function(err, docs) {
+                if (err) {
+                    console.log("Error find decks: " + err);
+                } else {
+                    try {
+                        res.render('decklist.jade', {decks: docs});
+                    } catch (err) {
+                        console.log("Error rendering set page: " + err);
+                    }
+                }
+
+
+            });
         };
 
         self.routes["/deck/create"] = function(req, res) {
@@ -302,40 +315,35 @@ var SampleApp = function() {
             res.send(self.cache_get('index.html'));
         };
 
-        self.routes['/deckbuilder'] = function(req, res) {
+        self.routes['/deckBuilder'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
-            deckCollection.find({}).toArray(function(err, docs) {
-                if (err) {
-                    console.log("Error find decks: " + err);
-                } else {
-                    try {
-                        res.render('deckbuilder.jade', {decks: docs});
-                    } catch (err) {
-                        console.log("Error rendering set page: " + err);
-                    }
-                }
 
-
-            });
+            try {
+                //res.render('deckbuilder.jade', {decks: docs});
+                res.setHeader('Content-Type', 'text/html');
+                res.send(self.cache_get('deckBuilder.html'));
+            } catch (err) {
+                console.log("Error rendering set page: " + err);
+            }
 
         };
 
         self.routes['/set/:name'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
-            console.log("Searching for cards in set: "+req.params.name);
+            console.log("Searching for cards in set: " + req.params.name);
             var searchObj = {"sets": {"$regex": req.params.name, "$options": "i"}}
             //var reg = new RegExp("'"+req.params.name+"'", "i");
 //            var reg = /^ravnica/i
 //            console.log("REGEX = "+JSON.stringify(reg));
 //            var searchObj = {"sets": {"$regex" : reg}};
-            console.log("Search object: "+JSON.stringify(searchObj));
+            console.log("Search object: " + JSON.stringify(searchObj));
             cardCollection.find(searchObj).toArray(function(err, docs) {
                 if (err) {
                     console.log("Error finding cards in set: " + req.params.name);
                 } else {
                     try {
-                        console.log("Found "+docs.length+" cards");
-                        res.render('set.jade', {name : req.params.name, cards: docs});
+                        console.log("Found " + docs.length + " cards");
+                        res.render('set.jade', {name: req.params.name, cards: docs});
                     } catch (err) {
                         console.log("Error rendering set page: " + err);
                     }

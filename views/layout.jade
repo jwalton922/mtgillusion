@@ -2,7 +2,22 @@ doctype 5
 html(lang="en")
     head
         link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel="stylesheet")
-        link(href="css/style.css")
+        link(href="/css/style.css", rel="stylesheet")
         block head
     body.container-fluid
+        div#top-bar
+            div.row-fluid.gapper
+                div.span4.top-gap
+                    a(href="/")
+                        h1(style="display: inline; float: left; padding-left: 20px;") MTG Illusion
+                        img(style="display: inline; margin: -10px 0 0 10px", src="img/illusion.png")
+                div.span4.top-gap
+                    ul#nav
+                        li.active
+                            a(href="/deckBuilder") Deck Builder
+                        li
+                            a(href="/decks") Decks                    
+                div.span4
+                    img.top-gap(src="img/fakeadd.png")
         block content
+            
