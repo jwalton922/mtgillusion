@@ -1,0 +1,25 @@
+extends layout
+
+block head
+    title=name
+
+block content
+    h1=name
+
+    p
+        a(href="/deck/#{name}/print")
+            button.btn.btn-large.btn-primary(type="button") Print Deck
+                i.icon-print.icon-white
+
+    table.table.table-striped
+        thead
+            tr
+                th Card
+                th Quanity
+        tbody
+            each card in deck.cards
+                tr
+                    td
+                        a(href="/card/#{card.name}")
+                            =card.name
+                    td #{card.quantity}

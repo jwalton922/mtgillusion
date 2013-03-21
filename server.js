@@ -150,26 +150,20 @@ var SampleApp = function() {
     self.createRoutes = function() {
         self.routes = {};
 
-
-        self.routes['/asciimo'] = function(req, res) {
-            var link = "http://i.imgur.com/kmbjB.png";
-            res.send("<html><body><img src='" + link + "'></body></html>");
-        };
-
         self.routes['/decks/all'] = function(req, res) {
             deckCollection.find({}).toArray(function(err, docs) {
                 res.send(docs);
             });
-        }
+        };
 
         self.routes['/decks'] = function(req, res) {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('decks.html'));
-        }
+        };
 
         self.routes["/deck/create"] = function(req, res) {
             console.log("get /deck/create called");
-        }
+        };
 
         self.routes["/search"] = function(req, res) {
             var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
@@ -196,7 +190,7 @@ var SampleApp = function() {
                 proxy_request.end();
             });
 
-        }
+        };
 
         self.routes["/card/:name/related"] = function(req, res) {
             var name = req.params.name.toUpperCase();
@@ -223,8 +217,14 @@ var SampleApp = function() {
                 console.log("Error querying: err");
                 res.send("Error");
             }
-        }
+        };
 
+        self.routes["/deck/:name"] = function(req, res) {
+            var name = req.params.name;
+            deckCollection.find({"name": name}).toArray(function(err, docs) {
+                res.render('deck.jade', {deck: docs[0], name: name});
+            });
+        };
         self.routes["/card/:name"] = function(req, res) {
             var name = req.params.name.toUpperCase();
             console.log("Looking for this card: " + name);
@@ -297,7 +297,13 @@ var SampleApp = function() {
             res.send(self.cache_get('index.html'));
         };
 
+        self.routes['/deckbuilder'] = function(req, res) {
+            res.setHeader('Content-Type', 'text/html');
+            deckCollection.find({}).toArray(function(err, docs) {
+                res.render('deckbuilder.jade', {decks: docs});
+            });
 
+        };
     };
 
 

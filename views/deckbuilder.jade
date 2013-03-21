@@ -1,0 +1,10 @@
+extends layout
+
+block head
+    title MTG Decks
+block content
+    h1 Decks
+    each deck in decks
+        p
+            a(href="/deck/#{deck.name}")
+                =deck.name
