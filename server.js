@@ -324,6 +324,10 @@ var SampleApp = function() {
             res.setHeader('Content-Type', 'text/html');
             console.log("Searching for cards in set: "+req.params.name);
             var searchObj = {"sets": {"$regex": req.params.name, "$options": "i"}}
+            //var reg = new RegExp("'"+req.params.name+"'", "i");
+//            var reg = /^ravnica/i
+//            console.log("REGEX = "+JSON.stringify(reg));
+//            var searchObj = {"sets": {"$regex" : reg}};
             console.log("Search object: "+JSON.stringify(searchObj));
             cardCollection.find(searchObj).toArray(function(err, docs) {
                 if (err) {

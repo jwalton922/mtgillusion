@@ -1,0 +1,11 @@
+extends layout
+
+block head
+    title=name
+
+block content
+    h1=name
+    each card in cards
+        p
+            a(href="/card/#{card.name}") #{card.name}
+
