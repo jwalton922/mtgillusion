@@ -218,7 +218,8 @@ var SampleApp = function() {
                 'START n=node(*)',
                 'MATCH n-[r]-x',
                 'WHERE has(n.name) AND n.name = "' + name + '" AND r.count > 2',
-                'RETURN r.count,x.name'
+                'RETURN r.count,x.name',
+                'LIMIT 30'
             ].join('\n');
 
             try {
@@ -285,9 +286,10 @@ var SampleApp = function() {
                         var query = [
                             'START n=node(*)',
                             'MATCH n-[r]-x',
-                            'WHERE has(n.name) AND n.name = "' + name + '"',
+                            'WHERE has(n.name) AND n.name = "' + name + '" AND r.count > 2',
                             'RETURN r.count,x.name',
-                            'ORDER BY r.count DESC'
+                            'ORDER BY r.count DESC',
+                            'LIMIT 30'
                         ].join('\n');
 
                         try {
