@@ -195,6 +195,7 @@ var SampleApp = function() {
             var proxy_request = http.request(options);
             proxy_request.addListener('response', function(proxy_response) {
                 proxy_response.addListener('data', function(chunk) {
+                    console.log("Seding typeahead");
                     res.write(chunk, 'binary');
                 });
                 proxy_response.addListener('end', function() {

@@ -8,9 +8,12 @@
         <meta name="keywords" content="magic the gathering combos card suggestion engine MTG deck building proxy proxies print printing build node graph"/>
         <title>MTG Illusion</title>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="css/typeahead.js-bootstrap.css" rel="stylesheet">
         <link href='//fonts.googleapis.com/css?family=Gabriela' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/style.css">
-        <script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="lib/components/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/components/typeahead.js/dist/typeahead.min.js"></script>
+        <script type="text/javascript" src="lib/components/hogan/web/builds/2.0.0/hogan-2.0.0.min.mustache.js"></script>
         <script type="text/javascript" src="lib/angular/angular.min.js"></script>
 
         <script type="text/javascript" src="js/deckBuilder.js"></script>
@@ -46,6 +49,9 @@
         <div class="container-fluid">
             <div class="row-fluid top-gap">
                 <div class="span6">
+                    <div>
+                        <input id="card-search" type="text" placeholder="Search for a card name">
+                    </div>
                     <div id="about">
                         <div>
                             <h2>Deck Building</h2>
@@ -170,6 +176,34 @@
                 </div>
             </div>
         </div> <!-- end of container-fluid -->
+        <script type="text/javascript">
+            $('#card-search').typeahead([{
+                name: 'cards',
+                template: '<p>{{value}}</p><small>{{snippet}}</small>',
+                engine: Hogan,
+                remote: {
+                    url: '/search?nameFragment=%QUERY',
+                    filter: function(results) {
+                        console.log(angular.toJson(results.Results));
+                        var res =[];
+                        angular.forEach(results.Results, function(value, key) {
+                            res.push( {'value': value.Name, 'snippet': value.Snippet});
+                        });
+                        return res;
+                    },
+                    dataType: 'json',
+                    valueKey: 'Name'
+                }
+
+            }]);
+            $(document).ready(function(){
+                $('#card-search').bind('typeahead:selected', function(e, e2) {
+                    window.location.href = '/card/' + e2.value;
+                });
+            });
+
+
+        </script>
         <script type="text/javascript">
 
             var _gaq = _gaq || [];
