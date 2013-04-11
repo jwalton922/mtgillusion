@@ -398,7 +398,7 @@ var SampleApp = function() {
                         for (var i in urls) {
                             console.log("name: " + urls[i].name);
                             xml += '<url>';
-                            xml += '<loc>'+ rootUrl + urls[i].name + '</loc>';
+                            xml += '<loc>'+ rootUrl + encodeURIComponent(urls[i].name) + '</loc>';
                             xml += '<changefreq>'+ freq +'</changefreq>';
                             xml += '<priority>'+ priority +'</priority>';
                             xml += '</url>';
