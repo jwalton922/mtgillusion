@@ -377,6 +377,43 @@ var SampleApp = function() {
             });
             ;
         };
+        self.routes['/sitemap.xml'] = function(req, res) {
+            var searchObj = {};
+            var returnObj = {"name": true, "_id": false};
+            cardCollection.find(searchObj, returnObj).toArray(function(err, docs) {
+                if(err) {
+                    console.log("Error getting card names from mongo");
+                } else {
+                    try {
+                        console.log("Got " + docs.length + " card names");
+//                        res.send(docs);
+                        // add non card pages here
+                        var staticUrls = [{name:'decks.html'}, {name:'deckbuilder.html'}, {name:'cardExplorer.html'}];
+                        var rootUrl = "http://www.mtgillusion.com/";
+                        var urls = staticUrls.concat(docs);
+
+                        var priority = 0.5;
+                        var freq = 'monthly';
+                        var xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+                        for (var i in urls) {
+                            console.log("name: " + urls[i].name);
+                            xml += '<url>';
+                            xml += '<loc>'+ rootUrl + urls[i].name + '</loc>';
+                            xml += '<changefreq>'+ freq +'</changefreq>';
+                            xml += '<priority>'+ priority +'</priority>';
+                            xml += '</url>';
+                            i++;
+                        }
+                        xml += '</urlset>';
+
+                        res.header('Content-Type', 'text/xml');
+                        res.send(xml);
+                    } catch(err) {
+                        console.log("Error gettting card names");
+                    }
+                }
+            });
+        };
         
         self.routes['/googleb5105f5530fd0cb9.html'] = function(req, res){
             res.setHeader('Content-Type', 'text/html');
