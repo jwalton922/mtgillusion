@@ -3,8 +3,11 @@ html(lang="en")
     head
         link(href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css", rel="stylesheet")
         link(href="/css/style.css", rel="stylesheet")
+        link(href="/css/typeahead.js-bootstrap.css", rel="stylesheet")
         script(type="text/javascript", src="/lib/components/jquery/jquery.min.js")
         script(type="text/javascript", src="/lib/components/typeahead.js/dist/typeahead.min.js")
+        script(type="text/javascript", src="/lib/components/hogan/web/builds/2.0.0/hogan-2.0.0.min.mustache.js")
+        script(type="text/javascript", src="/lib/angular/angular.min.js")
 
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         block head
@@ -15,6 +18,8 @@ html(lang="en")
                     a(href="/")
                         h1(style="display: inline; float: left; padding-left: 20px;") MTG Illusion
                         img(style="display: inline; margin: -10px 0 0 10px", src="/img/illusion.png")
+                    div(style="padding-left: 20px; padding-top: 5px;")
+                        input#card-search(type="text", placeholder="Search for a card name")
                 div.span4.top-gap
                     ul#nav
                         li.active
@@ -40,4 +45,29 @@ html(lang="en")
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.async=1;g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
             s.parentNode.insertBefore(g,s)}(document,"script"));
+
+            $(document).ready(function(){
+                $('#card-search').bind('typeahead:selected', function(e, e2) {
+                    window.location.href = '/card/' + e2.value;
+                });
+            });
+
+            $('#card-search').typeahead([{
+                name: 'cards',
+                template: '<p>{{value}}</p><small>{{snippet}}</small>',
+                engine: Hogan,
+                remote: {
+                    url: '/search?nameFragment=%QUERY',
+                    filter: function(results) {
+                        var res =[];
+                        angular.forEach(results.Results, function(value, key) {
+                            res.push( {'value': value.Name, 'snippet': value.Snippet});
+                        });
+                        return res;
+                    },
+                dataType: 'json',
+                valueKey: 'Name'
+                }
+
+                }]);
             

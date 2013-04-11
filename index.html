@@ -24,11 +24,18 @@
                 <div class="span4 top-gap">
                     <h1 style="display: inline; float: left; padding-left: 20px;">MTG Illusion</h1>
                     <img style="display: inline; margin: -10px 0 0 10px" src="img/illusion.png">
+                    <div style="padding-left: 20px; padding-top: 5px;">
+                        <input id="card-search" type="text" placeholder="Search for a card name">
+                    </div>
                 </div>
+
                 <div class="span4 top-gap">
                     <ul id="nav">
                         <li class="active"><a href="/deckBuilder">Deck Builder</a></li>
                         <li><a href="/decks">Decks</a></li>
+                        <li>
+
+                        </li>
                     </ul>
                 </div>
                 <div class="span4 top-gap">
@@ -50,7 +57,7 @@
             <div class="row-fluid top-gap">
                 <div class="span6">
                     <div>
-                        <input id="card-search" type="text" placeholder="Search for a card name">
+                        <!--<input id="card-search" type="text" placeholder="Search for a card name">-->
                     </div>
                     <div id="about">
                         <div>
@@ -184,7 +191,7 @@
                 remote: {
                     url: '/search?nameFragment=%QUERY',
                     filter: function(results) {
-                        console.log(angular.toJson(results.Results));
+//                        console.log(angular.toJson(results.Results));
                         var res =[];
                         angular.forEach(results.Results, function(value, key) {
                             res.push( {'value': value.Name, 'snippet': value.Snippet});
