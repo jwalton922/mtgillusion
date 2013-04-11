@@ -186,16 +186,18 @@ var SampleApp = function() {
 
         self.routes["/search"] = function(req, res) {
             var url = "http://gatherer.wizards.com/Handlers/InlineCardSearch.ashx";
-            console.log("search called with params: " + encodeURIComponent(JSON.stringify(req.query)));
+//            console.log("naked: " + req.query.nameFragment);
+            var nameFragment = encodeURIComponent(req.query.nameFragment);
+//            console.log("search called with params: " + nameFragment);
             var options = {
                 host: 'gatherer.wizards.com',
-                path: "/Handlers/InlineCardSearch.ashx?nameFragment=" + req.query.nameFragment
+                path: "/Handlers/InlineCardSearch.ashx?nameFragment=" + nameFragment
             };
 
             var proxy_request = http.request(options);
             proxy_request.addListener('response', function(proxy_response) {
                 proxy_response.addListener('data', function(chunk) {
-                    console.log("Seding typeahead");
+                    //console.log("Seding typeahead");
                     res.write(chunk, 'binary');
                 });
                 proxy_response.addListener('end', function() {

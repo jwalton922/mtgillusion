@@ -56,7 +56,7 @@ function DeckBuilder($scope, $http, $log) {
 
         var url = "/search";
         var params = {};
-        params.nameFragment = encodeURIComponent($scope.searchText);
+        params.nameFragment = $scope.searchText;
         params.dataType = "json";
 
         $http.get(url, {params: params}).success(function(xhr) {
